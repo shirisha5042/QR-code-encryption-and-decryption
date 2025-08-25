@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Crypto - Secure QR Code Generator</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+            <path d="m5 5 2 2"/>
+            <path d="m5 17 2-2"/>
+            <path d="m17 5 2 2"/>
+            <path d="m17 17 2 2"/>
+          </svg>
+        </div>
+        <h1>QR Crypto</h1>
+      </div>
+      <p class="subtitle">Secure QR Code Generator with End-to-End Encryption</p>
+    </header>
+
+    <div class="main-content">
+      <div class="tabs">
+        <button class="tab-button active" data-tab="encrypt">Encrypt & Generate</button>
+        <button class="tab-button" data-tab="decrypt">Scan & Decrypt</button>
+      </div>
+
+      <!-- Encrypt Tab -->
+      <div class="tab-content active" id="encrypt-tab">
+        <div class="card">
+          <div class="card-header">
+            <h2>Encrypt Message</h2>
+            <p>Enter your secret message to encrypt and generate a QR code</p>
+          </div>
+          <div class="form-group">
+            <label for="messageInput">Secret Message</label>
+            <textarea id="messageInput" placeholder="Enter your secret message here..." rows="4"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="keyInput">Encryption Key (optional)</label>
+            <input type="text" id="keyInput" placeholder="Leave empty to generate a random key">
+            <small>Save this key to decrypt your message later</small>
+          </div>
+          <button id="generateBtn" class="btn btn-primary">Generate Encrypted QR Code</button>
+          <div id="qrResult" class="qr-result hidden">
+            <div class="qr-container"><canvas id="qrCanvas"></canvas></div>
+            <div class="result-info">
+              <div class="key-display">
+                <label>Your Encryption Key:</label>
+                <div class="key-value">
+                  <code id="generatedKey"></code>
+                  <button id="copyKeyBtn" class="btn-icon" title="Copy key">Copy</button>
+                </div>
+              </div>
+              <button id="downloadBtn" class="btn btn-secondary">Download QR Code</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decrypt Tab -->
+      <div class="tab-content" id="decrypt-tab">
+        <div class="card">
+          <div class="card-header">
+            <h2>Scan & Decrypt</h2>
+            <p>Scan a QR code with your webcam or upload an image to decrypt the message</p>
+          </div>
+          <div class="scan-options">
+            <button id="cameraBtn" class="btn btn-primary">Use Camera</button>
+            <div class="divider">or</div>
+            <label for="fileInput" class="btn btn-secondary">Upload Image
+              <input type="file" id="fileInput" accept="image/*" hidden>
+            </label>
+            <button id="decryptUploadedBtn" class="btn btn-primary">Decrypt Uploaded QR</button>
+          </div>
+
+          <!-- ✅ Upload Preview + Status -->
+          <div id="uploadPreviewContainer" class="hidden">
+            <img id="uploadPreview" alt="Uploaded QR preview" />
+          </div>
+          <div id="uploadStatus" class="status-box hidden"></div>
+
+          <!-- ✅ Camera Container -->
+          <div id="cameraContainer" class="camera-container hidden">
+            <video id="video" autoplay muted playsinline></video>
+            <canvas id="scanCanvas" hidden></canvas>
+            <button id="stopCameraBtn" class="btn btn-secondary">Stop Camera</button>
+          </div>
+
+          <!-- ✅ Camera Warning -->
+          <div id="cameraWarning" class="warning-box hidden">
+            ⚠️ Unable to access camera. <br>Please allow camera permissions in your browser or try a different device.
+          </div>
+
+          <div class="form-group">
+            <label for="decryptKeyInput">Decryption Key</label>
+            <input type="text" id="decryptKeyInput" placeholder="Enter your encryption key">
+          </div>
+
+          <!-- ✅ Highlighted Decryption Box -->
+          <div id="decryptResult" class="decrypt-result hidden">
+            <div class="message-box">
+              <h3>🔓 Message Decrypted</h3>
+              <p id="decryptedText"></p>
+              <button id="copyDecryptedBtn" class="btn btn-secondary">Copy Message</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"><span class="toast-message"></span></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
